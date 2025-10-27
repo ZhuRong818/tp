@@ -92,6 +92,8 @@ public class LogicManager implements Logic {
                 || commandWord.equals("ClearCommand")
                 || commandWord.equals("RemarkCommand")
                 || commandWord.equals("AddEventCommand")
+                || commandWord.equals("AddAttendanceCommand")
+                || commandWord.equals("MarkAttendanceCommand")
                 || commandWord.equals("DeleteEventCommand")
                 || commandWord.equals("AddTaskCommand")
                 || commandWord.equals("DeleteTaskCommand")

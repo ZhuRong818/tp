@@ -6,8 +6,11 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -15,11 +18,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.attendance.AddAttendanceResult;
 import seedu.address.model.attendance.Attendance;
+import seedu.address.model.attendance.AttendanceMessages;
+import seedu.address.model.attendance.MarkAttendanceResult;
+import seedu.address.model.attendance.exceptions.AttendanceOperationException;
 import seedu.address.model.budget.Budget;
 import seedu.address.model.common.Money;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.task.Task;
 
@@ -206,6 +214,74 @@ public class ModelManager implements Model {
         addressBook.setAttendance(target, editedAttendance);
     }
 
+    @Override
+    public MarkAttendanceResult markAttendance(EventId eventId, List<Name> memberNames)
+            throws AttendanceOperationException {
+        requireNonNull(eventId);
+        requireNonNull(memberNames);
+
+        Event event = requireEvent(eventId);
+        List<Name> uniqueNames = deduplicatePreservingOrder(memberNames);
+        Map<Name, Attendance> attendanceByName = indexAttendanceByName(eventId);
+
+        List<Name> newlyMarked = new ArrayList<>();
+        List<Name> alreadyMarked = new ArrayList<>();
+
+        for (Name name : uniqueNames) {
+            Attendance attendance = attendanceByName.get(name);
+            if (attendance == null) {
+                throw new AttendanceOperationException(
+                        String.format(AttendanceMessages.MESSAGE_MEMBER_NOT_IN_ATTENDANCE, name));
+            }
+
+            if (attendance.hasAttended()) {
+                alreadyMarked.add(name);
+                continue;
+            }
+
+            Attendance updatedAttendance = attendance.markAttended();
+            addressBook.setAttendance(attendance, updatedAttendance);
+            newlyMarked.add(name);
+        }
+
+        logger.fine(() -> String.format("Marked attendance for %d members (skipped %d already marked) in event %s.",
+                newlyMarked.size(), alreadyMarked.size(), eventId));
+        return new MarkAttendanceResult(event, newlyMarked, alreadyMarked);
+    }
+
+    @Override
+    public AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
+            throws AttendanceOperationException {
+        requireNonNull(eventId);
+        requireNonNull(memberNames);
+
+        Event event = requireEvent(eventId);
+        List<Name> uniqueNames = deduplicatePreservingOrder(memberNames);
+
+        List<Name> addedMembers = new ArrayList<>();
+        List<Name> duplicateMembers = new ArrayList<>();
+
+        for (Name name : uniqueNames) {
+            if (!memberExists(name)) {
+                throw new AttendanceOperationException(
+                        String.format(AttendanceMessages.MESSAGE_MEMBER_NOT_FOUND, name));
+            }
+
+            Attendance attendance = new Attendance(eventId, name);
+            if (addressBook.hasAttendance(attendance)) {
+                duplicateMembers.add(name);
+                continue;
+            }
+
+            addressBook.addAttendance(attendance);
+            addedMembers.add(name);
+        }
+
+        logger.fine(() -> String.format("Added %d attendance records (skipped %d duplicates) for event %s.",
+                addedMembers.size(), duplicateMembers.size(), eventId));
+        return new AddAttendanceResult(event, addedMembers, duplicateMembers);
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -359,6 +435,34 @@ public class ModelManager implements Model {
             }
         }
         return result;
+    }
+
+    private Event requireEvent(EventId eventId) throws AttendanceOperationException {
+        Event event = addressBook.getEventByEventId(eventId);
+        if (event == null) {
+            throw new AttendanceOperationException(AttendanceMessages.MESSAGE_EVENT_NOT_FOUND);
+        }
+        return event;
+    }
+
+    private List<Name> deduplicatePreservingOrder(List<Name> names) {
+        return new ArrayList<>(new LinkedHashSet<>(names));
+    }
+
+    private Map<Name, Attendance> indexAttendanceByName(EventId eventId) {
+        Map<Name, Attendance> attendanceByName = new LinkedHashMap<>();
+        for (Attendance attendance : addressBook.getAttendanceList()) {
+            if (!attendance.getEventId().equals(eventId)) {
+                continue;
+            }
+            Attendance existing = attendanceByName.putIfAbsent(attendance.getMemberName(), attendance);
+            assert existing == null : "Attendance list should not contain duplicate members for the same event.";
+        }
+        return attendanceByName;
+    }
+
+    private boolean memberExists(Name name) {
+        return addressBook.getPersonList().stream().anyMatch(person -> person.getName().equals(name));
     }
 
     @Override

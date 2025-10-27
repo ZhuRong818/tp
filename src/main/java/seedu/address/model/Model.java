@@ -8,11 +8,15 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.attendance.AddAttendanceResult;
 import seedu.address.model.attendance.Attendance;
+import seedu.address.model.attendance.MarkAttendanceResult;
+import seedu.address.model.attendance.exceptions.AttendanceOperationException;
 import seedu.address.model.budget.Budget;
 import seedu.address.model.common.Money;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.task.Task;
 
@@ -157,6 +161,18 @@ public interface Model {
      * Replaces the given attendance record {@code target} with {@code editedAttendance}.
      */
     void setAttendance(Attendance target, Attendance editedAttendance);
+
+    /**
+     * Marks attendance for the given members and returns the result.
+     */
+    MarkAttendanceResult markAttendance(EventId eventId, List<Name> memberNames)
+            throws AttendanceOperationException;
+
+    /**
+     * Adds attendance records for the given members and returns the result.
+     */
+    AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
+            throws AttendanceOperationException;
 
     /**
      * Returns an unmodifiable view of the filtered event list

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,14 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.attendance.AddAttendanceResult;
 import seedu.address.model.attendance.Attendance;
+import seedu.address.model.attendance.MarkAttendanceResult;
+import seedu.address.model.attendance.exceptions.AttendanceOperationException;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Name;
 import seedu.address.model.task.Task;
 import seedu.address.testutil.TaskBuilder;
 
@@ -241,6 +246,18 @@ public class AddTaskCommandTest {
 
         @Override
         public void setAttendance(Attendance target, Attendance editedAttendance) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public MarkAttendanceResult markAttendance(EventId eventId, List<Name> memberNames)
+                throws AttendanceOperationException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
+                throws AttendanceOperationException {
             throw new AssertionError("This method should not be called.");
         }
 

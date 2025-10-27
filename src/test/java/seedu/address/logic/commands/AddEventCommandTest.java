@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.testutil.TypicalEvents.getTypicalAddressBook;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
@@ -16,9 +18,13 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.attendance.AddAttendanceResult;
+import seedu.address.model.attendance.MarkAttendanceResult;
+import seedu.address.model.attendance.exceptions.AttendanceOperationException;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Name;
 import seedu.address.model.task.Task;
 import seedu.address.testutil.EventBuilder;
 
@@ -261,6 +267,18 @@ public class AddEventCommandTest {
         @Override
         public void setAttendance(seedu.address.model.attendance.Attendance target,
                 seedu.address.model.attendance.Attendance editedAttendance) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public MarkAttendanceResult markAttendance(EventId eventId, List<Name> memberNames)
+                throws AttendanceOperationException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
+                throws AttendanceOperationException {
             throw new AssertionError("This method should not be called.");
         }
     }

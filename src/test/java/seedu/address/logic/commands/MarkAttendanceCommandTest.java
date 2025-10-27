@@ -43,8 +43,10 @@ public class MarkAttendanceCommandTest {
 
         MarkAttendanceCommand markAttendanceCommand = new MarkAttendanceCommand(eventId, List.of(memberName));
 
+        String newlyMarkedText = AttendanceMessageUtil.formatNames(List.of(memberName));
+        String alreadyMarkedText = AttendanceMessageUtil.formatNames(List.of());
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_SUCCESS,
-                event.getDescription(), memberName, "None");
+                event.getDescription(), newlyMarkedText, alreadyMarkedText);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setAttendance(new Attendance(eventId, memberName),
@@ -103,7 +105,9 @@ public class MarkAttendanceCommandTest {
 
         // Second attendance (duplicate)
         String expectedMessage = String.format(MarkAttendanceCommand.MESSAGE_SUCCESS,
-                event.getDescription(), "None", memberName);
+                event.getDescription(),
+                AttendanceMessageUtil.formatNames(List.of()),
+                AttendanceMessageUtil.formatNames(List.of(memberName)));
 
         assertCommandSuccess(markAttendanceCommand, model, expectedMessage, model);
     }

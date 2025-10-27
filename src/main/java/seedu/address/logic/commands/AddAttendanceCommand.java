@@ -2,15 +2,13 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.attendance.Attendance;
+import seedu.address.model.attendance.AddAttendanceResult;
+import seedu.address.model.attendance.AttendanceMessages;
+import seedu.address.model.attendance.exceptions.AttendanceOperationException;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
 import seedu.address.model.person.Name;
@@ -26,8 +24,8 @@ public class AddAttendanceCommand extends Command {
             + "Parameters: e/EVENTID m/MEMBER[/MEMBER]...\n"
             + "Example: " + COMMAND_WORD + " e/Orientation2023 m/John Doe/Jane Smith";
 
-    public static final String MESSAGE_EVENT_NOT_FOUND = "Event not found";
-    public static final String MESSAGE_MEMBER_NOT_FOUND = "Member not found: %1$s";
+    public static final String MESSAGE_EVENT_NOT_FOUND = AttendanceMessages.MESSAGE_EVENT_NOT_FOUND;
+    public static final String MESSAGE_MEMBER_NOT_FOUND = AttendanceMessages.MESSAGE_MEMBER_NOT_FOUND;
     public static final String MESSAGE_RESULT = "Attendance list for %1$s updated.\nAdded: %2$s%3$s";
 
     private final EventId eventId;
@@ -49,55 +47,19 @@ public class AddAttendanceCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        Event event = model.getEventByEventId(eventId);
-        if (event == null) {
-            throw new CommandException(MESSAGE_EVENT_NOT_FOUND);
+        try {
+            AddAttendanceResult result = model.addAttendance(eventId, memberNames);
+            Event event = result.getEvent();
+            String addedText = AttendanceMessageUtil.formatNames(result.getAddedMembers());
+            List<Name> duplicateMembers = result.getDuplicateMembers();
+            String duplicateMessage = duplicateMembers.isEmpty()
+                    ? ""
+                    : "\n" + AttendanceMessageUtil.formatAlreadyAddedMessage(duplicateMembers);
+            return new CommandResult(String.format(MESSAGE_RESULT,
+                    event.getDescription(), addedText, duplicateMessage));
+        } catch (AttendanceOperationException e) {
+            throw new CommandException(e.getMessage(), e);
         }
-
-        Set<Name> uniqueNames = new LinkedHashSet<>(memberNames);
-        List<Name> addedMembers = new ArrayList<>();
-        List<Name> duplicateMembers = new ArrayList<>();
-
-        for (Name name : uniqueNames) {
-            if (!memberExists(model, name)) {
-                throw new CommandException(String.format(MESSAGE_MEMBER_NOT_FOUND, name));
-            }
-
-            Attendance attendance = new Attendance(eventId, name);
-            if (model.hasAttendance(attendance)) {
-                duplicateMembers.add(name);
-                continue;
-            }
-
-            model.addAttendance(attendance);
-            addedMembers.add(name);
-        }
-
-        String addedText = formatNames(addedMembers);
-        String duplicateMessage = duplicateMembers.isEmpty()
-                ? ""
-                : "\n" + formatAlreadyAddedMessage(duplicateMembers);
-        return new CommandResult(String.format(MESSAGE_RESULT, event.getDescription(), addedText, duplicateMessage));
-    }
-
-    private boolean memberExists(Model model, Name name) {
-        return model.getAddressBook().getPersonList().stream()
-                .anyMatch(person -> person.getName().equals(name));
-    }
-
-    private String formatNames(List<Name> names) {
-        if (names.isEmpty()) {
-            return "None";
-        }
-        return names.stream().map(Name::toString).collect(Collectors.joining(", "));
-    }
-
-    private String formatAlreadyAddedMessage(List<Name> names) {
-        String nameText = formatNames(names);
-        if (names.size() == 1) {
-            return "Member already added: " + nameText;
-        }
-        return "Members already added: " + nameText;
     }
 
     @Override
