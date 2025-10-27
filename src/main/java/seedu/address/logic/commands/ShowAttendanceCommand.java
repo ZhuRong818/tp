@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.attendance.Attendance;
+import seedu.address.model.attendance.AttendanceMessages;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
+import seedu.address.model.person.Name;
 
 /**
  * Displays a summary of attendance for an event.
@@ -22,7 +24,7 @@ public class ShowAttendanceCommand extends Command {
             + "Parameters: e/EVENTID\n"
             + "Example: " + COMMAND_WORD + " e/Orientation2023";
 
-    public static final String MESSAGE_EVENT_NOT_FOUND = "Event not found";
+    public static final String MESSAGE_EVENT_NOT_FOUND = AttendanceMessages.MESSAGE_EVENT_NOT_FOUND;
     public static final String MESSAGE_SUCCESS =
         "Attendance summary for %1$s:\n"
         + "Attended (%2$d): %3$s\n"
@@ -54,28 +56,21 @@ public class ShowAttendanceCommand extends Command {
                 .filter(attendance -> attendance.getEventId().equals(eventId))
                 .collect(Collectors.toList());
 
-        List<String> attendedNames = eventAttendances.stream()
+        List<Name> attendedNames = eventAttendances.stream()
                 .filter(Attendance::hasAttended)
-                .map(attendance -> attendance.getMemberName().toString())
+                .map(Attendance::getMemberName)
                 .collect(Collectors.toList());
 
-        List<String> absentNames = eventAttendances.stream()
+        List<Name> absentNames = eventAttendances.stream()
                 .filter(attendance -> !attendance.hasAttended())
-                .map(attendance -> attendance.getMemberName().toString())
+                .map(Attendance::getMemberName)
                 .collect(Collectors.toList());
 
-        String attendedText = formatNames(attendedNames);
-        String absentText = formatNames(absentNames);
+        String attendedText = AttendanceMessageUtil.formatNames(attendedNames);
+        String absentText = AttendanceMessageUtil.formatNames(absentNames);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, event.getDescription(),
                 attendedNames.size(), attendedText, absentNames.size(), absentText));
-    }
-
-    private String formatNames(List<String> names) {
-        if (names.isEmpty()) {
-            return "None";
-        }
-        return String.join(", ", names);
     }
 
     @Override
@@ -92,4 +87,3 @@ public class ShowAttendanceCommand extends Command {
         return eventId.equals(otherCommand.eventId);
     }
 }
-

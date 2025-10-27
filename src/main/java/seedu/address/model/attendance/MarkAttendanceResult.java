@@ -14,6 +14,9 @@ public class MarkAttendanceResult {
     private final List<Name> newlyMarkedMembers;
     private final List<Name> alreadyMarkedMembers;
 
+    /**
+     * Creates a result describing a mark-attendance operation.
+     */
     public MarkAttendanceResult(Event event, List<Name> newlyMarkedMembers, List<Name> alreadyMarkedMembers) {
         this.event = event;
         this.newlyMarkedMembers = List.copyOf(newlyMarkedMembers);
@@ -32,4 +35,3 @@ public class MarkAttendanceResult {
         return alreadyMarkedMembers;
     }
 }
-

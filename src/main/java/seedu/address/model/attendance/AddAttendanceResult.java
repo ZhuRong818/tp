@@ -14,6 +14,9 @@ public class AddAttendanceResult {
     private final List<Name> addedMembers;
     private final List<Name> duplicateMembers;
 
+    /**
+     * Creates a result describing an add-attendance operation.
+     */
     public AddAttendanceResult(Event event, List<Name> addedMembers, List<Name> duplicateMembers) {
         this.event = event;
         this.addedMembers = List.copyOf(addedMembers);
@@ -32,4 +35,3 @@ public class AddAttendanceResult {
         return duplicateMembers;
     }
 }
-

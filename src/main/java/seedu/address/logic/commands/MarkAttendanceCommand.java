@@ -25,7 +25,8 @@ public class MarkAttendanceCommand extends Command {
             + "Parameters: e/EVENTID m/MEMBER[/MEMBER]...\n"
             + "Example: " + COMMAND_WORD + " e/Orientation2023 m/John Doe/Jane Smith";
 
-    public static final String MESSAGE_SUCCESS = "Attendance for %1$s marked.\nNewly marked: %2$s\nAlready marked: %3$s";
+    public static final String MESSAGE_SUCCESS = "Attendance for %1$s marked.\n"
+            + "Newly marked: %2$s\nAlready marked: %3$s";
     public static final String MESSAGE_EVENT_NOT_FOUND = AttendanceMessages.MESSAGE_EVENT_NOT_FOUND;
     public static final String MESSAGE_MEMBER_NOT_FOUND = AttendanceMessages.MESSAGE_MEMBER_NOT_IN_ATTENDANCE;
 

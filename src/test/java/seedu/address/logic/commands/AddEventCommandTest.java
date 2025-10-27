@@ -23,8 +23,8 @@ import seedu.address.model.attendance.MarkAttendanceResult;
 import seedu.address.model.attendance.exceptions.AttendanceOperationException;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventId;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
 import seedu.address.model.task.Task;
 import seedu.address.testutil.EventBuilder;
 
@@ -265,6 +265,12 @@ public class AddEventCommandTest {
         }
 
         @Override
+        public AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
+                throws AttendanceOperationException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setAttendance(seedu.address.model.attendance.Attendance target,
                 seedu.address.model.attendance.Attendance editedAttendance) {
             throw new AssertionError("This method should not be called.");
@@ -272,12 +278,6 @@ public class AddEventCommandTest {
 
         @Override
         public MarkAttendanceResult markAttendance(EventId eventId, List<Name> memberNames)
-                throws AttendanceOperationException {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
                 throws AttendanceOperationException {
             throw new AssertionError("This method should not be called.");
         }

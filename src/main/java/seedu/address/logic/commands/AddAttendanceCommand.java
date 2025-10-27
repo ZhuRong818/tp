@@ -26,7 +26,7 @@ public class AddAttendanceCommand extends Command {
 
     public static final String MESSAGE_EVENT_NOT_FOUND = AttendanceMessages.MESSAGE_EVENT_NOT_FOUND;
     public static final String MESSAGE_MEMBER_NOT_FOUND = AttendanceMessages.MESSAGE_MEMBER_NOT_FOUND;
-    public static final String MESSAGE_RESULT = "Attendance list for %1$s updated.\nAdded: %2$s%3$s";
+    public static final String MESSAGE_SUCCESS = "Attendance list for %1$s updated.\nAdded: %2$s%3$s";
 
     private final EventId eventId;
     private final List<Name> memberNames;
@@ -55,7 +55,7 @@ public class AddAttendanceCommand extends Command {
             String duplicateMessage = duplicateMembers.isEmpty()
                     ? ""
                     : "\n" + AttendanceMessageUtil.formatAlreadyAddedMessage(duplicateMembers);
-            return new CommandResult(String.format(MESSAGE_RESULT,
+            return new CommandResult(String.format(MESSAGE_SUCCESS,
                     event.getDescription(), addedText, duplicateMessage));
         } catch (AttendanceOperationException e) {
             throw new CommandException(e.getMessage(), e);

@@ -9,7 +9,8 @@ public final class AttendanceMessages {
     public static final String MESSAGE_MEMBER_NOT_FOUND = "Member not found: %1$s";
     public static final String MESSAGE_MEMBER_NOT_IN_ATTENDANCE = "Member not found in attendance list: %1$s";
     public static final String LABEL_NONE = "None";
+    public static final String MESSAGE_MEMBER_ALREADY_ADDED_SINGLE = "Member already added: %s";
+    public static final String MESSAGE_MEMBER_ALREADY_ADDED_PLURAL = "Members already added: %s";
 
     private AttendanceMessages() {}
 }
-

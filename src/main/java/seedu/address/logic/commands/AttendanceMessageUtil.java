@@ -20,7 +20,9 @@ final class AttendanceMessageUtil {
     }
 
     static String formatAlreadyAddedMessage(List<Name> names) {
-        String label = names.size() == 1 ? "Member already added: %s" : "Members already added: %s";
+        String label = names.size() == 1
+                ? AttendanceMessages.MESSAGE_MEMBER_ALREADY_ADDED_SINGLE
+                : AttendanceMessages.MESSAGE_MEMBER_ALREADY_ADDED_PLURAL;
         return String.format(label, formatNames(names));
     }
 }

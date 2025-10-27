@@ -158,6 +158,12 @@ public interface Model {
     void addAttendance(Attendance attendance);
 
     /**
+     * Adds attendance records for the given members and returns the result.
+     */
+    AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
+            throws AttendanceOperationException;
+
+    /**
      * Replaces the given attendance record {@code target} with {@code editedAttendance}.
      */
     void setAttendance(Attendance target, Attendance editedAttendance);
@@ -166,12 +172,6 @@ public interface Model {
      * Marks attendance for the given members and returns the result.
      */
     MarkAttendanceResult markAttendance(EventId eventId, List<Name> memberNames)
-            throws AttendanceOperationException;
-
-    /**
-     * Adds attendance records for the given members and returns the result.
-     */
-    AddAttendanceResult addAttendance(EventId eventId, List<Name> memberNames)
             throws AttendanceOperationException;
 
     /**
