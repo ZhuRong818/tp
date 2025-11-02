@@ -68,7 +68,7 @@ else
         end
     end
 
-    create seedu.address.logic.commands.AttendanceMessages as Messages
+    create "seedu.address.logic.commands.AttendanceMessages" as Messages LOGIC_COLOR
     AddAttendanceCommand -> Messages : buildAddAttendanceResult(...)
     activate Messages LOGIC_COLOR_T1
     Messages --> AddAttendanceCommand : resultMessage
