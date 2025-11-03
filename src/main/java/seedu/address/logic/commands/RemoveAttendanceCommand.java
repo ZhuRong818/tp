@@ -75,14 +75,20 @@ public class RemoveAttendanceCommand extends Command {
                                         List<Name> targetNames) throws CommandException {
         List<Name> removedMembers = new ArrayList<>();
 
+        List<Attendance> attendancesToRemove = new ArrayList<>();
+
         for (Name name : targetNames) {
             Attendance attendance = attendanceByName.get(name);
             if (attendance == null) {
                 throw new CommandException(String.format(MESSAGE_MEMBER_NOT_FOUND, name));
             }
 
-            model.removeAttendance(attendance);
+            attendancesToRemove.add(attendance);
             removedMembers.add(name);
+        }
+
+        for (Attendance attendance : attendancesToRemove) {
+            model.removeAttendance(attendance);
         }
 
         return removedMembers;

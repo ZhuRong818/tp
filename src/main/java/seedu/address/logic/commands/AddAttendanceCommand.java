@@ -79,7 +79,7 @@ public class AddAttendanceCommand extends Command {
 
     private AttendanceUpdateSummary addMembersToEvent(Model model,
                                                       Set<Name> uniqueNames) throws CommandException {
-        List<Name> addedMembers = new ArrayList<>();
+        List<Name> membersToAdd = new ArrayList<>();
         List<Name> duplicateMembers = new ArrayList<>();
 
         for (Name name : uniqueNames) {
@@ -94,8 +94,13 @@ public class AddAttendanceCommand extends Command {
                 continue;
             }
 
+            membersToAdd.add(name);
+        }
+
+        List<Name> addedMembers = new ArrayList<>(membersToAdd.size());
+        for (Name name : membersToAdd) {
+            Attendance attendance = new Attendance(eventId, name);
             model.addAttendance(attendance);
-            assert !addedMembers.contains(name);
             addedMembers.add(name);
         }
 

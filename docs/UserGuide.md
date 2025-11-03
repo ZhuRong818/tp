@@ -6,7 +6,7 @@
 
 # ClubHub User Guide
 
-ClubHub is a powerful desktop application **targets NUS CCA secretaries who need to manage varous details of many CCA member.** We aim to efficiently manage members, events, and attendance. It combines the speed and precision of a Command Line Interface (CLI) with the clarity and accessibility of a Graphical User Interface (GUI). By typing simple, intuitive commands, users can perform tasks such as adding members, recording attendance, or viewing details much faster than with traditional point-and-click systems without using external servers or internet connection. This hybrid design makes ClubHub both lightweight and efficient, enabling users who type quickly to streamline their administrative work while still enjoying the visual feedback and ease of use that a GUI provides.
+ClubHub is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, ClubHub can get your contact management tasks done faster than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -31,9 +31,9 @@ ClubHub is a powerful desktop application **targets NUS CCA secretaries who need
 
    * `list` : Lists all contacts.
 
-   * `add n/John y/3 s/A1234567X e/johnd@example.com p/98765432 d/Vegetarian r/President t/leadership` : Adds a club member.
+   * `add n/John Doe y/3 s/A1234567X e/johnd@example.com p/98765432 d/Vegetarian r/President t/leadership` : Adds a club member.
 
-   * `addevent e/Orientation2025 dt/2025-08-15 desc/NUS Freshmen Orientation` : Adds an event.
+   * `addevent ev/Orientation2025 dt/2025-08-15 desc/NUS Freshmen Orientation` : Adds an event.
 
    * `clear` : Deletes all contacts.
 
@@ -276,7 +276,7 @@ Examples:
 
 ### Showing attendance summary : `showattendance`
 
-Displays a summary of attendance for an event, including counts of attended and absent members. This is different from viewattendees as the command show number of absentees and attendees. For event that have many attendees, this command gives users attendance stats more quickly compared to viewattendees
+Displays a summary of attendance for an event, including counts of attended and absent members.
 
 Format: `showattendance e/EVENTID`
 

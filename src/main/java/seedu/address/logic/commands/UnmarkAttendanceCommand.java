@@ -82,6 +82,8 @@ public class UnmarkAttendanceCommand extends Command {
         List<Name> newlyAbsent = new ArrayList<>();
         List<Name> alreadyAbsent = new ArrayList<>();
 
+        List<Attendance> attendancesToUnmark = new ArrayList<>();
+
         for (Name name : targetNames) {
             Attendance attendance = attendanceByName.get(name);
             if (attendance == null) {
@@ -94,10 +96,14 @@ public class UnmarkAttendanceCommand extends Command {
                 continue;
             }
 
-            Attendance updatedAttendance = attendance.markAbsent();
-            model.setAttendance(attendance, updatedAttendance);
             assert !newlyAbsent.contains(name);
             newlyAbsent.add(name);
+            attendancesToUnmark.add(attendance);
+        }
+
+        for (Attendance attendance : attendancesToUnmark) {
+            Attendance updatedAttendance = attendance.markAbsent();
+            model.setAttendance(attendance, updatedAttendance);
         }
 
         return new AttendanceUnmarkingSummary(newlyAbsent, alreadyAbsent);

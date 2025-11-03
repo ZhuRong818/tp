@@ -108,6 +108,8 @@ public class MarkAttendanceCommand extends Command {
         List<Name> newlyMarked = new ArrayList<>();
         List<Name> alreadyMarked = new ArrayList<>();
 
+        List<Attendance> attendancesToMark = new ArrayList<>();
+
         for (Name name : targetNames) {
             Attendance attendance = attendanceByName.get(name);
             if (attendance == null) {
@@ -120,10 +122,14 @@ public class MarkAttendanceCommand extends Command {
                 continue;
             }
 
-            Attendance updatedAttendance = attendance.markAttended();
-            model.setAttendance(attendance, updatedAttendance);
             assert !newlyMarked.contains(name);
             newlyMarked.add(name);
+            attendancesToMark.add(attendance);
+        }
+
+        for (Attendance attendance : attendancesToMark) {
+            Attendance updatedAttendance = attendance.markAttended();
+            model.setAttendance(attendance, updatedAttendance);
         }
 
         return new AttendanceMarkingSummary(newlyMarked, alreadyMarked);
