@@ -467,7 +467,7 @@ For all use cases below, the **System** is `ClubHub` and the **Actor** is the **
 
 **MSS (Main Success Scenario):**
 1. Secretary chooses to add a member.
-2. ClubHub requests name, year, role, dietary requirements, student number, phone number(aobve are compulsory).
+2. ClubHub requests name, year, role, dietary requirements, student number, phone number(above are compulsory).
 3. Secretary enters the requested details.
 4. ClubHub validates inputs and creates the member record.
 5. ClubHub displays confirmation and the updated member list.
@@ -671,7 +671,7 @@ For all use cases below, the **System** is `ClubHub` and the **Actor** is the **
     - 2a1. ClubHub displays an error message.
     - 2a2. Secretary corrects file and retries.
 - 2b. Duplicate entries in import file.
-    - 2b1. ClubHub prompts whether to update or skip.
+    - 2b1. ClubHub informs user that the malformed line has been skipped.
     - Use case resumes from step 2.
 
 ---
