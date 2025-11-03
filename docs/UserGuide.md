@@ -370,7 +370,7 @@ Formats:
 * `budget report` - Displays the budget report
 * `setexpense INDEX a/AMOUNT` - Sets the expense for an event (INDEX refers to the event's position in the event list)
 
-**Expense display:** When you add a new event, it initially shows $0.00 in the event list panel. This indicates that no expense has been set yet for that event. After you set an expense using `setexpense`, the expense amount will appear beside the event title in the event list panel. This allows you to quickly see the cost of each event at a glance. The expense is displayed in the format `$AMOUNT` (e.g., `$150.00`).
+**Expense display:** When you add a new event, it will initially show $0.00 in the event list panel. This indicates that no expense has been set yet for that event. After you set an expense using `setexpense`, the expense amount will appear beside the event title in the event list panel. This allows you to quickly see the cost of each event at a glance. The expense is displayed in the format `$AMOUNT` (e.g., `$150.00`).
 
 Examples:
 * `budget set a/3000.00 from/2025-01-01 to/2025-12-31` - Sets a budget of $3000.00 for the year 2025
