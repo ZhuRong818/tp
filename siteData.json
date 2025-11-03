@@ -80,7 +80,16 @@
         "glossary": "Glossary",
         "appendix-instructions-for-manual-testing": "Appendix: Instructions for manual testing",
         "launch-and-shutdown": "Launch and shutdown",
-        "deleting-a-person": "Deleting a person",
+        "adding-a-member": "Adding a member",
+        "editing-a-member": "Editing a member",
+        "finding-members": "Finding members",
+        "deleting-a-member": "Deleting a member",
+        "events": "Events",
+        "attendance": "Attendance",
+        "tasks": "Tasks",
+        "budget-and-expenses": "Budget and expenses",
+        "undo-and-redo": "Undo and redo",
+        "import-and-export": "Import and export",
         "saving-data": "Saving data"
       },
       "headingKeywords": {}
